@@ -51,6 +51,9 @@ jobs:
         app-name: sprintseries-gh-devops-simon
         publish-profile: ${{ secrets.PORTAL_PUBLISH_PROFILE }}    
         package: .
+    - uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
