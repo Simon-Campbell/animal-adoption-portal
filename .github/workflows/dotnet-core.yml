@@ -51,6 +51,11 @@ jobs:
         app-name: sprintseries-gh-devops-simon
         publish-profile: ${{ secrets.PORTAL_PUBLISH_PROFILE }}    
         package: .
+    - name: Configure test web-portal
+      uses: Azure/appservice-settings@v1
+      with:
+        app-name: sprintseries-gh-devops-simon
+        app-settings-json: '{ "GlobalPassword": "f00b4r" }'
   nuget:
     needs: [build]
     runs-on: ubuntu-latest
