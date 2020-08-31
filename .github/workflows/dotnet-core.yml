@@ -55,7 +55,7 @@ jobs:
       uses: Azure/appservice-settings@v1
       with:
         app-name: sprintseries-gh-devops-simon
-        app-settings-json: '{ "GlobalPassword": "f00b4r" }'
+        app-settings-json: ${{ secrets.PORTAL_APP_SETTINGS_TEST }}
   nuget:
     needs: [build]
     runs-on: ubuntu-latest
