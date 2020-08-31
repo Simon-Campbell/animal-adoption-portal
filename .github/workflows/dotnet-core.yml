@@ -22,12 +22,21 @@ jobs:
       run: dotnet test AnimalAdoption.Web.Portal.UnitTests --no-restore --verbosity normal
     - name: Publish
       run: dotnet publish AnimalAdoption.Web.Portal --configuration Release --no-restore --output publish/web-portal
+    - name: Package
+      run: dotnet pack --configuration Release AnimalAdoption.Common.Logic --output publish/common-logic
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.1.4
       with:
         name: web-portal
         path: publish/web-portal
         if-no-files-found: error
+    - name: Upload Package
+      uses: actions/upload-artifact@v2.1.4
+      with:
+        name: nuget-lib
+        path: publish/common-logic
+        if-no-files-found: error
+
   deployment:
     runs-on: ubuntu-latest
     needs: [build]
@@ -46,9 +55,12 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
+    - name: Download common-logic
+      uses: actions/download-artifact@v2
+      with:
+        name: nuget-lib
     - name: Add NuGet Source
       run: dotnet nuget add source https://nuget.pkg.github.com/Simon-Campbell/index.json -n github -u Simon-Campbell -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
-    - name: Package
-      run: dotnet pack --configuration Release AnimalAdoption.Common.Logic --output publish/common-logic
     - name: Publish NuGet Package
-      run: dotnet nuget push "publish/common-logic/*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push "*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+
