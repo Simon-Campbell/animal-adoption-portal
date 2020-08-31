@@ -36,4 +36,4 @@ jobs:
     - name: Package
       run: dotnet pack --configuration Release AnimalAdoption.Common.Logic --output publish/common-logic
     - name: Publish NuGet Package
-      run: dotnet nuget push "publish/common-logic/*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push "publish/common-logic/*.nupkg" --source "github"
