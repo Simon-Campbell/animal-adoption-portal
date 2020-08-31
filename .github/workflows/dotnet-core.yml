@@ -32,7 +32,7 @@ jobs:
         path: publish/web-portal
         if-no-files-found: error
     - name: Add NuGet Source
-      run: dotnet nuget add source https://nuget.pkg.github.com/Simon-Campbell/index.json -n github -u Simon-Campbell -p GH_TOKEN ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget add source https://nuget.pkg.github.com/Simon-Campbell/index.json -n github -u Simon-Campbell -p ${{ secrets.GITHUB_TOKEN }}
     - name: Package
       run: dotnet pack --configuration Release AnimalAdoption.Common.Logic --output publish/common-logic
     - name: Publish NuGet Package
