@@ -5,12 +5,9 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -23,7 +20,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore      
     - name: Unit Test
       run: dotnet test AnimalAdoption.Web.Portal.UnitTests --no-restore --verbosity normal
-    - name: Publish 
+    - name: Publish
       run: dotnet publish AnimalAdoption.Web.Portal --configuration Release --no-restore --output publish/web-portal
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.1.4
@@ -31,6 +28,20 @@ jobs:
         name: web-portal
         path: publish/web-portal
         if-no-files-found: error
+  deployment:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+    - name: Deploy Test App
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: sprintseries-gh-devops-simon    
+        publish-profile: ${{ secrets.PORTAL_PUBLISH_PROFILE }}    
+        package: publish/web-portal
+  nuget:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
     - name: Add NuGet Source
       run: dotnet nuget add source https://nuget.pkg.github.com/Simon-Campbell/index.json -n github -u Simon-Campbell -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
     - name: Package
