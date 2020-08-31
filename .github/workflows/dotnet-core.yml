@@ -36,3 +36,4 @@ jobs:
     - name: Package
       run: dotnet pack --configuration Release AnimalAdoption.Common.Logic --output publish/common-logic
     - name: Publish NuGet Package
+      run: dotnet nuget push "bin/Release/animal-adoption-portal.1.0.0.nupkg" --source "github"
