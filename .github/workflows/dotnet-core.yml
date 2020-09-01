@@ -65,7 +65,7 @@ jobs:
       with:
         inlineScript: | 
           az deployment group create \
-          --resource-group ${{ env.TEST_RESOURCE_GROUP_NAME }} \
+          --resource-group sprintseries-gh-devops-simon \
           --template-file ./deploy.json \
           --parameters resourceLocation=australiasoutheast \ 
           --parameters tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a \
