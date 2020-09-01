@@ -38,19 +38,10 @@ jobs:
         if-no-files-found: error
 
   deployment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
     needs: [build]
     steps:
-    - name: Download web-portal
-      uses: actions/download-artifact@v2
-      with:
-        name: web-portal
-    - name: Deploy test web-portal
-      uses: Azure/webapps-deploy@v2
-      with:
-        app-name: sprintseries-gh-devops-simon
-        publish-profile: ${{ secrets.PORTAL_PUBLISH_PROFILE }}    
-        package: .
+    - uses: actions/checkout@v2
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -74,6 +65,17 @@ jobs:
           --parameters keyVaultName=ss-gh-devops-simon \
           --parameters webAppName=sprintseries-gh-devops-simon \
           --parameters resourceGroupServicePrincipalManagedApplicationObjectId=45c5014c-69e4-4726-bdc4-a490145f7f56
+    - name: Download web-portal
+      uses: actions/download-artifact@v2
+      with:
+        name: web-portal
+        path: deps/web-portal
+    - name: Deploy test web-portal
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: sprintseries-gh-devops-simon
+        publish-profile: ${{ secrets.PORTAL_PUBLISH_PROFILE }}    
+        package: .
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
