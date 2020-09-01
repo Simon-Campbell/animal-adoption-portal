@@ -54,11 +54,22 @@ jobs:
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Get key vault secret
+      uses: Azure/get-keyvault-secrets@v1
+      id: global-password-secret
+      with:
+        keyvault: ss-gh-devops-simon
+        secrets: GlobalPassword 
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
         app-name: sprintseries-gh-devops-simon
-        app-settings-json: ${{ secrets.PORTAL_APP_SETTINGS_TEST }}
+        app-settings-json: | 
+          [ {
+            "name": "GlobalPassword",
+            "value": "${{ steps.global-password-secret.outputs.GlobalPassword }}",
+            "slotSetting": false
+          } ]
   nuget:
     needs: [build]
     runs-on: ubuntu-latest
