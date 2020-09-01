@@ -59,17 +59,38 @@ jobs:
       id: global-password-secret
       with:
         keyvault: ss-gh-devops-simon
-        secrets: GlobalPassword 
+        secrets: GlobalPassword
+    - name: Azure CLI Action
+      uses: Azure/cli@v1.0.0
+      with:
+        inlineScript: | 
+          az deployment group create \
+          --resource-group ${{ env.TEST_RESOURCE_GROUP_NAME }} \
+          --template-file ./deploy.json \
+          --parameters resourceLocation=australiasoutheast \ 
+          --parameters tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a \
+          --parameters subscriptionGuid=ded54998-9bf4-40e9-8461-36644de8819b \
+          --parameters appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 \
+          --parameters keyVaultName=ss-gh-devops-simon \
+          --parameters webAppName=sprintseries-gh-devops-simon \
+          --parameters resourceGroupServicePrincipalManagedApplicationObjectId=45c5014c-69e4-4726-bdc4-a490145f7f56
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
         app-name: sprintseries-gh-devops-simon
         app-settings-json: | 
-          [ {
+          [ 
+          {
             "name": "GlobalPassword",
-            "value": "${{ steps.global-password-secret.outputs.GlobalPassword }}",
+            "value": "${{ env.GlobalPassword }}",
             "slotSetting": false
-          } ]
+          },
+          {
+            "name": "SimulatedFailureChance",
+            "value": 2,
+            "slotSetting": false
+          }
+          ]
   nuget:
     needs: [build]
     runs-on: ubuntu-latest
