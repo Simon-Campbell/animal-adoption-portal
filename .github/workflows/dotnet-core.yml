@@ -66,9 +66,9 @@ jobs:
     - name: Get key vault secret
       uses: Azure/get-keyvault-secrets@v1
       id: global-password-secret
-        with:
-          keyvault: ss-gh-devops-simon
-          secrets: GlobalPassword
+      with:
+        keyvault: ss-gh-devops-simon
+        secrets: GlobalPassword
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
