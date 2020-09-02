@@ -37,7 +37,7 @@ jobs:
         path: publish/common-logic
         if-no-files-found: error
 
-  deployment:
+  test_deployment:
     runs-on: ubuntu-latest    
     needs: [build]
     env:

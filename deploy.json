@@ -20,18 +20,9 @@
         },
         "resourceGroupServicePrincipalManagedApplicationObjectId": {
             "type": "String"
-        },
-        "keyVaultSecretValueGlobalPassword": {
-            "type": "String"
-        },
-        "keyVaultSecretValueSimulatedFailureChance": {
-            "type": "String"
         }
     },
-    "variables": {
-        "keyVaultSecretNameSimulatedFailureChance": "SimulatedFailureChance",
-        "keyVaultSecretNameGlobalPassword": "GlobalPassword"
-    },
+    "variables": {},
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
@@ -64,7 +55,7 @@
                         }
                     },
                     {
-                        "objectId": "b9ace4e8-7ed5-46f1-ae47-c7d36126b9a8",
+                        "objectId": "6872f3f9-175a-4cf7-b853-beb1adf4502b",
                         "tenantId": "[parameters('tenantGuid')]",
                         "permissions": {
                             "keys": [
@@ -123,30 +114,6 @@
             }
         },
         {
-            "type": "Microsoft.KeyVault/vaults/secrets",
-            "name": "[concat(parameters('keyVaultName'), '/', variables('keyVaultSecretNameGlobalPassword'))]",
-            "apiVersion": "2018-02-14",
-            "location": "[parameters('resourceLocation')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
-            ],
-            "properties": {
-                "value": "[parameters('keyVaultSecretValueGlobalPassword')]"
-            }
-        },
-        {
-            "type": "Microsoft.KeyVault/vaults/secrets",
-            "name": "[concat(parameters('keyVaultName'), '/', variables('keyVaultSecretNameSimulatedFailureChance'))]",
-            "apiVersion": "2018-02-14",
-            "location": "[parameters('resourceLocation')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
-            ],
-            "properties": {
-                "value": "[parameters('keyVaultSecretValueSimulatedFailureChance')]"
-            }
-        },
-        {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2018-11-01",
             "name": "[parameters('appServicePlanName')]",
@@ -173,7 +140,7 @@
             "kind": "app,linux",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
-             ],
+            ],
             "properties": {
                 "name": "[parameters('webAppName')]",
                 "siteConfig": {
