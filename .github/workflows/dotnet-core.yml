@@ -64,7 +64,7 @@ jobs:
           appServicePlanName=${{ env.TEST_APP_SERVICE_PLAN_NAME }}
           keyVaultName=${{ env.TEST_KEY_VAULT_NAME }}
           webAppName=${{ env.TEST_WEB_APP_NAME }}
-          resourceGroupServicePrincipalManagedApplicationObjectId=05c9c9da-cf96-4f1a-879e-e2b30419b8d8
+          resourceGroupServicePrincipalManagedApplicationObjectId=1969bcf3-6f6c-4784-8c5b-f500e2ab2abc
     - name: Download web-portal
       uses: actions/download-artifact@v2
       with:
