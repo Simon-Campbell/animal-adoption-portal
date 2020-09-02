@@ -45,12 +45,6 @@ jobs:
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: Get key vault secret
-      uses: Azure/get-keyvault-secrets@v1
-      id: global-password-secret
-      with:
-        keyvault: ss-gh-devops-simon
-        secrets: GlobalPassword
     - name: Azure CLI Action
       uses: Azure/cli@v1.0.0
       with:
@@ -58,7 +52,7 @@ jobs:
           az deployment group create \
           --resource-group sprintseries-gh-devops-simon \
           --template-file ./deploy.json \
-          --parameters resourceLocation=australiasoutheast tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 keyVaultName=ss-gh-devops-simon webAppName=sprintseries-gh-devops-simon resourceGroupServicePrincipalManagedApplicationObjectId=45c5014c-69e4-4726-bdc4-a490145f7f56
+          --parameters resourceLocation=australiasoutheast tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 keyVaultName=ss-gh-devops-simon webAppName=sprintseries-gh-devops-simon resourceGroupServicePrincipalManagedApplicationObjectId=45c5014c-69e4-4726-bdc4-a490145f7f56 keyVaultSecretValueGlobalPassword=k3yv4ult keyVaultSecretValueSimulatedFailureChance=2
     - name: Download web-portal
       uses: actions/download-artifact@v2
       with:
@@ -68,8 +62,13 @@ jobs:
       uses: Azure/webapps-deploy@v2
       with:
         app-name: sprintseries-gh-devops-simon
-        publish-profile: ${{ secrets.PORTAL_PUBLISH_PROFILE }}    
         package: .
+    - name: Get key vault secret
+        uses: Azure/get-keyvault-secrets@v1
+        id: global-password-secret
+        with:
+          keyvault: ss-gh-devops-simon
+          secrets: GlobalPassword
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
