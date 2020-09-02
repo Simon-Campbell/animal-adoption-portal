@@ -73,18 +73,18 @@ jobs:
     - name: Deploy test web-portal
       uses: Azure/webapps-deploy@v2
       with:
-        app-name: ss-gh-devops-simon
+        app-name: ${{ env.TEST_WEB_APP_NAME }}
         package: .
     - name: Get key vault secret
       uses: Azure/get-keyvault-secrets@v1
       id: global-password-secret
       with:
-        keyvault: ss-gh-devops-simon2
+        keyvault: ${{ env.TEST_KEY_VAULT_NAME }}
         secrets: 'GlobalPassword, SimulatedFailureChance'
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
-        app-name: ss-gh-devops-simon
+        app-name: ${{ env.TEST_WEB_APP_NAME }}
         app-settings-json: | 
           [ 
             {
