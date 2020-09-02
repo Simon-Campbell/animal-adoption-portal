@@ -64,8 +64,8 @@ jobs:
         app-name: sprintseries-gh-devops-simon
         package: .
     - name: Get key vault secret
-        uses: Azure/get-keyvault-secrets@v1
-        id: global-password-secret
+      uses: Azure/get-keyvault-secrets@v1
+      id: global-password-secret
         with:
           keyvault: ss-gh-devops-simon
           secrets: GlobalPassword
