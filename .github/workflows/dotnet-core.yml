@@ -52,7 +52,7 @@ jobs:
           az deployment group create \
           --resource-group ss-gh-devops-simon \
           --template-file ./deploy.json \
-          --parameters resourceLocation=australiasoutheast tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 keyVaultName=ss-gh-devops-simon webAppName=ss-gh-devops-simon resourceGroupServicePrincipalManagedApplicationObjectId=05c9c9da-cf96-4f1a-879e-e2b30419b8d8 keyVaultSecretValueGlobalPassword=k3yv4ult keyVaultSecretValueSimulatedFailureChance=2
+          --parameters resourceLocation=australiasoutheast tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 keyVaultName=ss-gh-devops-simon2 webAppName=ss-gh-devops-simon resourceGroupServicePrincipalManagedApplicationObjectId=05c9c9da-cf96-4f1a-879e-e2b30419b8d8 keyVaultSecretValueGlobalPassword=k3yv4ult keyVaultSecretValueSimulatedFailureChance=2
     - name: Download web-portal
       uses: actions/download-artifact@v2
       with:
@@ -67,7 +67,7 @@ jobs:
       uses: Azure/get-keyvault-secrets@v1
       id: global-password-secret
       with:
-        keyvault: ss-gh-devops-simon
+        keyvault: ss-gh-devops-simon2
         secrets: GlobalPassword
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
