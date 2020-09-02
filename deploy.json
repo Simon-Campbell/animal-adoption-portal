@@ -29,8 +29,8 @@
         }
     },
     "variables": {
-    "keyVaultSecretNameSimulatedFailureChance":"GlobalPassword",
-        "keyVaultSecretNameGlobalPassword":"SimulatedFailureChance"
+        "keyVaultSecretNameSimulatedFailureChance": "SimulatedFailureChance",
+        "keyVaultSecretNameGlobalPassword": "GlobalPassword"
     },
     "resources": [
         {
@@ -123,6 +123,30 @@
             }
         },
         {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(parameters('keyVaultName'), '/', variables('keyVaultSecretNameGlobalPassword'))]",
+            "apiVersion": "2018-02-14",
+            "location": "[parameters('resourceLocation')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('keyVaultSecretValueGlobalPassword')]"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(parameters('keyVaultName'), '/', variables('keyVaultSecretNameSimulatedFailureChance'))]",
+            "apiVersion": "2018-02-14",
+            "location": "[parameters('resourceLocation')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('keyVaultSecretValueSimulatedFailureChance')]"
+            }
+        },
+        {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2018-11-01",
             "name": "[parameters('appServicePlanName')]",
@@ -159,30 +183,6 @@
                 },
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
                 "clientAffinityEnabled": false
-            }
-        },
-        {
-            "type": "Microsoft.KeyVault/vaults/secrets",
-            "name": "[concat(parameters('keyVaultName'), '/', variables('keyVaultSecretNameGlobalPassword'))]",
-            "apiVersion": "2018-02-14",
-            "location": "[parameters('resourceLocation')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
-            ],
-            "properties": {
-                "value": "[parameters('keyVaultSecretValueGlobalPassword')]"
-            }
-        },
-        {
-            "type": "Microsoft.KeyVault/vaults/secrets",
-            "name": "[concat(parameters('keyVaultName'), '/', variables('keyVaultSecretNameSimulatedFailureChance'))]",
-            "apiVersion": "2018-02-14",
-            "location": "[parameters('resourceLocation')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
-            ],
-            "properties": {
-                "value": "[parameters('keyVaultSecretValueSimulatedFailureChance')]"
             }
         }
     ],
