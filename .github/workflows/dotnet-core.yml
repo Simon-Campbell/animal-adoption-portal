@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest    
     needs: [build]
     env:
+      TEST_RESOURCE_GROUP_NAME: ss-gh-devops-simon
       TEST_APP_SERVICE_PLAN_NAME: ASP-sprintseriesghdevopssimon-87e7
       TEST_KEY_VAULT_NAME: ss-gh-devops-simon2
       TEST_WEB_APP_NAME: ss-gh-devops-simon
@@ -52,9 +53,9 @@ jobs:
     - name: Deploy resources to the Test Resource Group using an ARM template
       uses: whiteducksoftware/azure-arm-action@v3.1
       with:
-        creds: ${{ secrets.GHA_MSAG_RG_TEST_AUEAST_AZSPRINTSERIES_SP }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
         resourceGroupName: ${{ env.TEST_RESOURCE_GROUP_NAME }}
-        templateLocation: ./arm-template/deploy.json
+        templateLocation: ./deploy.json
         deploymentName: gha-test-deploy
         deploymentMode: Incremental
         overrideParameters: |
