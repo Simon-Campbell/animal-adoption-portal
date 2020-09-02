@@ -40,19 +40,30 @@ jobs:
   deployment:
     runs-on: ubuntu-latest    
     needs: [build]
+    env:
+      TEST_APP_SERVICE_PLAN_NAME: ASP-sprintseriesghdevopssimon-87e7
+      TEST_KEY_VAULT_NAME: ss-gh-devops-simon2
+      TEST_WEB_APP_NAME: ss-gh-devops-simon
     steps:
     - uses: actions/checkout@v2
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: Azure CLI Action
-      uses: Azure/cli@v1.0.0
+    - name: Deploy resources to the Test Resource Group using an ARM template
+      uses: whiteducksoftware/azure-arm-action@v3.1
       with:
-        inlineScript: | 
-          az deployment group create \
-          --resource-group ss-gh-devops-simon \
-          --template-file ./deploy.json \
-          --parameters resourceLocation=australiasoutheast tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 keyVaultName=ss-gh-devops-simon2 webAppName=ss-gh-devops-simon resourceGroupServicePrincipalManagedApplicationObjectId=05c9c9da-cf96-4f1a-879e-e2b30419b8d8 keyVaultSecretValueGlobalPassword=k3yv4ult keyVaultSecretValueSimulatedFailureChance=2
+        creds: ${{ secrets.GHA_MSAG_RG_TEST_AUEAST_AZSPRINTSERIES_SP }}
+        resourceGroupName: ${{ env.TEST_RESOURCE_GROUP_NAME }}
+        templateLocation: ./arm-template/deploy.json
+        deploymentName: gha-test-deploy
+        deploymentMode: Incremental
+        overrideParameters: |
+          resourceLocation=australiasoutheast
+          tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a
+          appServicePlanName=${{ env.TEST_APP_SERVICE_PLAN_NAME }}
+          keyVaultName=${{ env.TEST_KEY_VAULT_NAME }}
+          webAppName=${{ env.TEST_WEB_APP_NAME }}
+          resourceGroupServicePrincipalManagedApplicationObjectId=05c9c9da-cf96-4f1a-879e-e2b30419b8d8
     - name: Download web-portal
       uses: actions/download-artifact@v2
       with:
@@ -68,7 +79,7 @@ jobs:
       id: global-password-secret
       with:
         keyvault: ss-gh-devops-simon2
-        secrets: GlobalPassword
+        secrets: 'GlobalPassword, SimulatedFailureChance'
     - name: Configure test web-portal
       uses: Azure/appservice-settings@v1
       with:
@@ -82,7 +93,7 @@ jobs:
             },
             {
               "name": "SimulatedFailureChance",
-              "value": 2,
+              "value": "${{ env.SimulatedFailureChance }}"",
               "slotSetting": false
             }
           ]
