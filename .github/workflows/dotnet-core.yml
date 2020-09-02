@@ -58,7 +58,7 @@ jobs:
           az deployment group create \
           --resource-group sprintseries-gh-devops-simon \
           --template-file ./deploy.json \
-          --parameters resourceLocation=australiasoutheast tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a subscriptionGuid=ded54998-9bf4-40e9-8461-36644de8819b appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 keyVaultName=ss-gh-devops-simon webAppName=sprintseries-gh-devops-simon resourceGroupServicePrincipalManagedApplicationObjectId=45c5014c-69e4-4726-bdc4-a490145f7f56
+          --parameters resourceLocation=australiasoutheast tenantGuid=dab167d2-fdab-4ab5-a387-22f955436d0a appServicePlanName=ASP-sprintseriesghdevopssimon-87e7 keyVaultName=ss-gh-devops-simon webAppName=sprintseries-gh-devops-simon resourceGroupServicePrincipalManagedApplicationObjectId=45c5014c-69e4-4726-bdc4-a490145f7f56
     - name: Download web-portal
       uses: actions/download-artifact@v2
       with:
@@ -76,16 +76,16 @@ jobs:
         app-name: sprintseries-gh-devops-simon
         app-settings-json: | 
           [ 
-          {
-            "name": "GlobalPassword",
-            "value": "${{ env.GlobalPassword }}",
-            "slotSetting": false
-          },
-          {
-            "name": "SimulatedFailureChance",
-            "value": 2,
-            "slotSetting": false
-          }
+            {
+              "name": "GlobalPassword",
+              "value": "${{ env.GlobalPassword }}",
+              "slotSetting": false
+            },
+            {
+              "name": "SimulatedFailureChance",
+              "value": 2,
+              "slotSetting": false
+            }
           ]
   nuget:
     needs: [build]
@@ -99,4 +99,3 @@ jobs:
       run: dotnet nuget add source https://nuget.pkg.github.com/Simon-Campbell/index.json -n github -u Simon-Campbell -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
     - name: Publish NuGet Package
       run: dotnet nuget push "*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
-
