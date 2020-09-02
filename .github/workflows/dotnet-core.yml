@@ -87,14 +87,13 @@ jobs:
         app-name: ${{ env.TEST_WEB_APP_NAME }}
         app-settings-json: | 
           [ 
-            {
-              "name": "GlobalPassword",
+            { "name": "GlobalPassword",
               "value": "${{ env.GlobalPassword }}",
               "slotSetting": false
             },
             {
               "name": "SimulatedFailureChance",
-              "value": "${{ env.SimulatedFailureChance }}"",
+              "value": "${{ env.SimulatedFailureChance }}",
               "slotSetting": false
             }
           ]
