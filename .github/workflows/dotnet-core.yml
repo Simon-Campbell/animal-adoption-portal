@@ -98,7 +98,7 @@ jobs:
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY"
-              "value": ${{ env.APPINSIGHTS_INSTRUMENTATIONKEY_PROD }",
+              "value": ${{ env.APPINSIGHTS_INSTRUMENTATIONKEY_PROD }}",
               "slotSetting": false
             }
           ]
