@@ -69,12 +69,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: web-portal
-        path: deps/web-portal
+        path: ./deps/web-portal
     - name: Deploy test web-portal
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.TEST_WEB_APP_NAME }}
-        package: deps/web-portal
+        package: ./deps/web-portal
     - name: Get key vault secret
       uses: Azure/get-keyvault-secrets@v1
       id: global-password-secret
