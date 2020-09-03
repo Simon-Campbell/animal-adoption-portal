@@ -95,6 +95,11 @@ jobs:
               "name": "SimulatedFailureChance",
               "value": "${{ env.SimulatedFailureChance }}",
               "slotSetting": false
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY"
+              "value": ${{ env.APPINSIGHTS_INSTRUMENTATIONKEY_PROD }",
+              "slotSetting": false
             }
           ]
   nuget:
