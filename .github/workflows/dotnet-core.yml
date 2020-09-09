@@ -69,7 +69,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: web-portal
-        path: ./deps/web-portal
+        path: ./deps/web-portal        
+    - name: Display downloaded artifacts
+      run: ls -R
+      working-directory: ./deps/web-portal
     - name: Deploy test web-portal
       uses: Azure/webapps-deploy@v2
       with:
